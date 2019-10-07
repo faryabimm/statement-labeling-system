@@ -15,14 +15,19 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.views.generic import RedirectView
 
 from register import views as register_views
 from . import views
 
 urlpatterns = [
     path('', include('django.contrib.auth.urls')),
-    path('admin/', admin.site.urls),
-    path('register/', register_views.register),
-    path('label/', views.label),
-    path('', views.label),
+    path('admin/', admin.site.urls, name='admin'),
+    path('register/', register_views.register, name='register'),
+    path('label/', views.label, name='label'),
+    path('', RedirectView.as_view(pattern_name='label', permanent=False)),
+
+    # temporary todo delete for production
+    path('complete/', views.complete, name='complete')
+
 ]

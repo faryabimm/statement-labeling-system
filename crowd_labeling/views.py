@@ -16,13 +16,11 @@ def label(request):
     if request.method == 'POST':
         form = LabelStatementForm(request.POST)
         if form.is_valid():
-
-            if request.POST.get('positive') is not None:
-                statement_label = LabelChoices.POSITIVE
-            else:
-                statement_label = LabelChoices.NEGATIVE
-
             end_timestamp = datetime.now().timestamp()
+            statement_label = LabelChoices.NEUTRAL
+            for choice_option in [x[1] for x in LabelChoices.values()]:
+                if request.POST.get(choice_option) is not None:
+                    statement_label = LabelChoices.value_of(choice_option)
 
             labeled_statement = Label(
                 user=request.user,
@@ -51,3 +49,7 @@ def label(request):
             'initial_timestamp': initial_timestamp,
         })
     return render(request, "label.html", context={"form": form})
+
+
+def complete(request):
+    return render(request, 'complete.html', context={})

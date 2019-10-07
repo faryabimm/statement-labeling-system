@@ -13,19 +13,30 @@ class Statement(models.Model):
 
 
 class LabelChoices(Enum):
-    POSITIVE = 'Positive'
-    NEGATIVE = 'Negative'
+    POSITIVE = ('Positive', '+')
+    NEGATIVE = ('Negative', '-')
+    NEUTRAL = ('Neutral', '?')
 
     @staticmethod
     def values():
-        return [(tag, tag.value) for tag in LabelChoices]
+        return [(tag, tag.value[0]) for tag in LabelChoices]
 
     @staticmethod
     def values_with_blank():
         return [('', '--------')] + LabelChoices.values()
 
     def __str__(self):
-        return self.value
+        return self.value[0]
+
+    def sign(self):
+        return self.value[1]
+
+    @staticmethod
+    def value_of(string):
+        for tag in LabelChoices:
+            if tag.value[0] == string:
+                return tag
+        return None
 
 
 class Label(models.Model):
@@ -39,8 +50,8 @@ class Label(models.Model):
 
     def __str__(self):
         return '{label} {time}s [{user}] {statement}'.format(
-            label='(+)' if self.label == LabelChoices.POSITIVE.value else '(-)',
+            label='({})'.format(LabelChoices.value_of(self.label).sign()),
             time=round(self.answer_time, settings.ADMIN_STATEMENT_RESPONSE_TIME_PRECISION),
             user=self.user.username,
-            statement=self.statement.text[:settings.MAX_ADMIN_STATEMENT_PREVIEW_CHARACTERS] + '...',
+            statement=self.statement.text[:settings.ADMIN_STATEMENT_PREVIEW_CHARACTER_LIMIT] + '...',
         )
