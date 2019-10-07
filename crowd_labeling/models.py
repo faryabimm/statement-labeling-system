@@ -1,7 +1,8 @@
 from enum import Enum
 
-from django.db import models
+from django.conf import settings
 from django.contrib.auth.models import User
+from django.db import models
 
 
 class Statement(models.Model):
@@ -23,6 +24,9 @@ class LabelChoices(Enum):
     def values_with_blank():
         return [('', '--------')] + LabelChoices.values()
 
+    def __str__(self):
+        return self.value
+
 
 class Label(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -34,4 +38,9 @@ class Label(models.Model):
     )
 
     def __str__(self):
-        return 'label: {label}, statement: {statement}'.format(label=self.label, statement=self.statement)
+        return '{label} {time}s [{user}] {statement}'.format(
+            label='(+)' if self.label == LabelChoices.POSITIVE.value else '(-)',
+            time=round(self.answer_time, settings.ADMIN_STATEMENT_RESPONSE_TIME_PRECISION),
+            user=self.user.username,
+            statement=self.statement.text[:settings.MAX_ADMIN_STATEMENT_PREVIEW_CHARACTERS] + '...',
+        )

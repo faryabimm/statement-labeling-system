@@ -4,18 +4,9 @@ from datetime import datetime
 from django.conf import settings
 from django.db.models import Count, Q
 from django.shortcuts import render, redirect
-from django.core.exceptions import PermissionDenied
 
 from .forms import LabelStatementForm
-from .models import Statement, Label
-
-
-def base(request):
-    return render(request, "base.html", context={})
-
-
-def home(request):
-    return render(request, "home.html", context={})
+from .models import Statement, Label, LabelChoices
 
 
 def label(request):
@@ -25,13 +16,19 @@ def label(request):
     if request.method == 'POST':
         form = LabelStatementForm(request.POST)
         if form.is_valid():
+
+            if request.POST.get('positive') is not None:
+                statement_label = LabelChoices.POSITIVE
+            else:
+                statement_label = LabelChoices.NEGATIVE
+
             end_timestamp = datetime.now().timestamp()
 
             labeled_statement = Label(
                 user=request.user,
                 statement=Statement.objects.get(id=form.cleaned_data['statement_id']),
                 answer_time=end_timestamp - form.cleaned_data['initial_timestamp'],
-                label=form.cleaned_data['label']
+                label=statement_label
             )
 
             labeled_statement.save()
@@ -54,7 +51,3 @@ def label(request):
             'initial_timestamp': initial_timestamp,
         })
     return render(request, "label.html", context={"form": form})
-
-
-def label_statement(request):
-    return None
