@@ -346,3 +346,5 @@ dmypy.json
 *.sqlite3
 
 production_secret.py
+
+venv/
