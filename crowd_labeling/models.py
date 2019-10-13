@@ -15,7 +15,8 @@ class Statement(models.Model):
 class LabelChoices(Enum):
     POSITIVE = ('Positive', '+')
     NEGATIVE = ('Negative', '-')
-    NEUTRAL = ('Neutral', '?')
+    NEUTRAL = ('Neutral', '=')
+    UNCERTAIN = ('Vague', '?')
 
     @staticmethod
     def values():
