@@ -1,5 +1,5 @@
 from django.contrib.auth.forms import UserCreationForm
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 
 def register(request):
@@ -7,6 +7,7 @@ def register(request):
         form = UserCreationForm(request.POST)
         if form.is_valid():
             form.save()
+        return redirect('/')
     else:
         form = UserCreationForm()
     return render(request, 'register/register.html', {'form': form})
