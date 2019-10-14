@@ -13,8 +13,8 @@ python manage.py migrate
 # create a superuser interactively
 python manage.py createsuperuser
 
-# import dataset in .JL format
-python manage.py import_statements dataset.jl
+# import dataset in .TXT format
+python manage.py import_statements dataset.txt
 
 # run the server
 python manage.py runserver
@@ -26,7 +26,7 @@ python manage.py runserver
 + responsive design
 
 ####\#TODO
-+ gain feedback and apply necessary changes
-+ add postgresql database compatibility
-+ deliver production settings (gunicorn, docker files, etc.)
-+ admin command to `export_labeled_dataset` 
++ ~~gain feedback and apply necessary changes~~
++ ~~add postgresql database compatibility~~
++ ~~deliver production settings~~
++ ~~admin command to~~ `export_labeled_dataset` 
