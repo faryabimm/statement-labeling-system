@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 import os
+
 from crowd_labeling.production_secret import *
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -122,4 +123,3 @@ ADMIN_STATEMENT_RESPONSE_TIME_PRECISION = 2
 
 # custom logical settings
 MAX_LABELS_PER_STATEMENT = 3
-
