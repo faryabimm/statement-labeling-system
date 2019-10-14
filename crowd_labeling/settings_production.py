@@ -1,4 +1,5 @@
 from .settings import *
+import os
 
 DATABASES = {
     'default': {
@@ -9,3 +10,5 @@ DATABASES = {
         'PORT': 5432,
     }
 }
+
+STATIC_ROOT = os.getcwd() + '/static'
