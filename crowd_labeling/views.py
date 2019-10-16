@@ -38,7 +38,13 @@ def label(request):
             .filter(~Q(label__user__username=request.user.username))
 
         if len(statements) == 0:
-            return render(request, 'complete.html', context={})
+            return render(request, 'complete.html', context={
+                "notify": {
+                    "type": "success",
+                    "title": "Success",
+                    "message": "Labeling finished. Thank You!"
+                }
+            })
 
         statement = random.choice(statements)
 

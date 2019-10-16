@@ -348,5 +348,4 @@ dmypy.json
 production_secret.py
 
 venv/
-static/*
-!static/js/
+static/

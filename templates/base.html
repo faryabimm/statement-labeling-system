@@ -1,5 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
+
+{% load static %}
 <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
@@ -77,5 +79,46 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
+
+<script type="text/javascript" src="{% static "js/bootstrap-notify.js" %}"></script>
 </body>
+<script>
+    if ('{{ notify }}') {
+        notify(django_var_parse('{{ notify }}'));
+    }
+
+    function notify(notify_data) {
+        let type = notify_data['type'];
+        let title = notify_data['title'];
+        let message = notify_data['message'];
+        let icon;
+        switch (type) {
+            case 'danger':
+                icon = 'fas fa-times-circle';
+                break;
+            case 'success':
+                icon = 'fas fa-check-circle';
+                break;
+            case 'warning':
+                icon = 'fas fa-exclamation-circle';
+                break;
+        }
+
+        $.notify({
+            icon: icon,
+            title: '<strong>' + title + '</strong><br/>',
+            message: message,
+        }, {
+            type: type,
+        });
+    }
+
+    function django_var_parse(string) {
+        try {
+            return JSON.parse(string.replace(/&#39;/g, '"'));
+        } catch (ignored) {
+            return undefined;
+        }
+    }
+</script>
 </html>
