@@ -11,5 +11,3 @@ DATABASES = {
         'PORT': 5432,
     }
 }
-
-STATIC_ROOT = os.getcwd() + '/static'
