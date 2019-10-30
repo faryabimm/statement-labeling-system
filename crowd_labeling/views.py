@@ -46,6 +46,8 @@ def label(request):
                 }
             })
 
+        user_label_count = Label.objects.filter(user=request.user).count()
+        max_possible_label_count = len(statements)
         statement = random.choice(statements)
 
         initial_timestamp = datetime.now().timestamp()
@@ -54,7 +56,12 @@ def label(request):
             'statement_id': statement.id,
             'initial_timestamp': initial_timestamp,
         })
-    return render(request, "label.html", context={"form": form})
+    return render(request, "label.html", context={
+        "form": form,
+        "user_label_count": user_label_count,
+        "max_possible_label_count": max_possible_label_count,
+        "progress_percentage": 100 * user_label_count / (user_label_count + max_possible_label_count),
+    })
 
 
 def complete(request):

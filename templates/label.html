@@ -42,6 +42,29 @@
                 </div>
             </div>
         </div>
+        <br/>
+        <label for="progress">Overall Crowd-Labeling progress</label>
+        <div id="progress" class="progress">
+            <div class="progress-bar" role="progressbar" style="width: {{ progress_percentage }}%;"
+                 aria-valuenow="{{ progress_percentage }}"
+                 aria-valuemin="0"
+                 aria-valuemax="100">{{ progress_percentage }}%
+            </div>
+        </div>
+        <br/>
+        <label for="performance">Your Performance</label>
+        <div id="performance">
+            <ul class="list-group">
+                <li class="list-group-item">
+                    <span class="badge badge-info">{{ max_possible_label_count }}</span>
+                    Available
+                </li>
+                <li class="list-group-item">
+                    <span class="badge badge-success">{{ user_label_count }}</span>
+                    Labeled
+                </li>
+            </ul>
+        </div>
 
     </form>
 {% endblock %}
